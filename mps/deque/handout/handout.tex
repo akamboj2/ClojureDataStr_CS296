@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+\usepackage[letterpaper,margin=0.5in]{geometry}
+
+\usepackage{titlesec}
+\usepackage{fontspec}
+
+\usepackage{minted}
+
+\usemintedstyle{trac}
+
+\defaultfontfeatures{Ligatures={TeX}}
+\newfontfamily\mytitlefont{Concourse T3}
+\newfontfamily\titlesc{Concourse C3}
+\newfontfamily\mytextfont{Equity Text A}
+\newfontfamily\mysc{Equity Caps A}
+%\setmonofont[Scale=0.86]{Inconsolata}
+
+\titleformat{\chapter}{\mytitlefont\huge}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}{\mytitlefont\Large}{\thesection}{1em}{}
+\titleformat{\subsection}{\mytitlefont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\mytitlefont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}[runin]{\mytextfont\normalsize\bfseries}{\theparagraph}{1em}{}
+
+\newminted{clojure}{linenos,numbersep=4pt}
+
+\begin{document}
+
+\def\title{Deque Lab}
+
+\hrule
+
+\mytitlefont
+
+\begin{center}
+\begin{Large}
+CS 296 --- \title
+\end{Large}
+\end{center}
+
+\mytextfont
+
+\hrule
+
+\vskip 1em
+
+\section{Introduction and Learning Objectives}
+
+Your objective for this lab is simple: implement a doubly ended queue.
+A doubly ended queue is like a regular queue, but items can be added or
+removed from both ends.  It is usually written \emph{deque}, and
+pronounced like \emph{deck}.  Some people write it as \emph{dequeue},
+but that looks like the queue operation, so we mangle the word.  We're
+in the engineering college; such things don't bother us.
+
+So go to your repository and do a \texttt{git pull}.  You will find the
+directory \texttt{deque-lab}, set up with the usual project files.
+
+\section{Given Code}
+
+\subsection{The \texttt{deque} Namespace}
+
+At the beginning of \texttt{core.clj}, you will see these lines:
+
+\begin{clojurecode}
+(ns deque.core)
+
+(defrecord Deque [front back size])
+\end{clojurecode}
+
+We will implement this by creating a record of three fields: front, back, and size.  They work just
+as they did in the functional queue presented in lecture.
+
+\section{Your Code}
+
+You will need to implement the following
+functions:
+
+\begin{itemize}
+\item \mint{clojure}|make-deque|
+\item \mint{clojure}|deque-size|
+\item \mint{clojure}|push-front|
+\item \mint{clojure}|push-back|
+\item \mint{clojure}|flip-front|
+\item \mint{clojure}|flip-back|
+\item \mint{clojure}|pop-front|
+\item \mint{clojure}|pop-back|
+\item \mint{clojure}|front|
+\item \mint{clojure}|back|
+\end{itemize}
+
+Note that the \texttt{push} and \texttt{pop} functions\footnote{By
+  ``push functions,'' I mean \texttt{push-front} and \texttt{push-back},
+  similarly for ``pop functions.''  That may seem obvious to you, but if
+  I don't put this here somebody will ask on Piazza.} return the
+resulting deques.  If you want the element, use \texttt{front} and
+\texttt{back}.  The \texttt{flip-front} function makes sure that the front list
+has data in it.  If not, it reverses the back list and moves that to the front list.  You
+saw this in lecture.  The \texttt{flip-back} function does the reverse.
+
+Also, I've included the \texttt{push-front} code, so you can see an example of idiomatic code.
+Notice how the \texttt{let} uses destructuring to make it easy to access the parts of the deque.
+
+\begin{clojurecode}
+(defn push-front
+  "Adds an element to the front of the deque."
+  [dq elt]
+  (let [{:keys [front back size]} dq]
+    (Deque. (cons elt front) back (inc size))))
+\end{clojurecode}
+
+\subsection{Test Cases}
+
+The file \texttt{test/deque/t\_core.clj} contains testing code.  The only test in it now
+is just an ``autofail'' test so it's clear who didn't even attempt the MP.  Delete that one.
+
+\end{document}
+
+
+%%% Local Variables:
+%%% TeX-command-default: "XeLaTeX-Shell"
+%%% TeX-master: t
+%%% End:

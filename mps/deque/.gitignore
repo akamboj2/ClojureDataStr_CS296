@@ -1,0 +1,9 @@
+target
+.lein-repl-history
+*.class
+*~
+\#*
+handout/auto
+handout/*.aux
+handout/*.log
+handout/*.pdf
